@@ -36,8 +36,7 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "react-native": "^0.63.2",
-    "react-native-windows": "0.62.4"
+    "react-native": "*"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
