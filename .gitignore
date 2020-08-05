@@ -42,4 +42,9 @@ android/local.properties
 android.yml
 *.iml
 
+windows/RNSensitiveInfo/bin
+windows/RNSensitiveInfo/obj
+windows/.vs
+
+
 .DS_STORE
