@@ -45,6 +45,7 @@ android.yml
 windows/RNSensitiveInfo/bin
 windows/RNSensitiveInfo/obj
 windows/.vs
+windows/packages
 
 
 .DS_STORE

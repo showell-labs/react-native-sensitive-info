@@ -1,4 +1,5 @@
-﻿using Microsoft.ReactNative.Managed;
+﻿using Microsoft.ReactNative;
+using Microsoft.ReactNative.Managed;
 
 namespace RNSensitiveInfo
 {
