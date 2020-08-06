@@ -13,11 +13,11 @@ namespace RNSensitiveInfo
     {
         
         [ReactMethod]
-        public void getItem(string key, JObject options, IReactPromise<string> result)
+        public void getItem(string key, JObject options, IReactPromise<string> promise)
         {
             if (string.IsNullOrEmpty(key))
             {
-                result.Reject(new ReactError { Exception = new ArgumentNullException("KEY IS REQUIRED") });
+                promise.Reject(new ReactError { Exception = new ArgumentNullException("KEY IS REQUIRED") });
                 return;
             }
 
@@ -28,7 +28,7 @@ namespace RNSensitiveInfo
                 var credential = prefs(name, key);
                 if (credential != null)
                 {
-                    result.Resolve(credential.Password);
+                    promise.Resolve(credential.Password);
                 }
                 else
                 {
@@ -38,16 +38,16 @@ namespace RNSensitiveInfo
             }
             catch (Exception ex)
             {
-                result.Reject(new ReactError { Message = "ERROR GET : " + ex.Message });
+                promise.Reject(new ReactError { Message = "ERROR GET : " + ex.Message });
             }
         }
 
         [ReactMethod]
-        public void setItem(string key, string value, JObject options, IReactPromise<string> result)
+        public void setItem(string key, string value, JObject options, IReactPromise<string> promise)
         {
             if (string.IsNullOrEmpty(key))
             {
-                result.Reject(new ReactError { Exception = new ArgumentNullException("KEY IS REQUIRED") });
+                promise.Reject(new ReactError { Exception = new ArgumentNullException("KEY IS REQUIRED") });
                 return;
             }
 
@@ -56,20 +56,20 @@ namespace RNSensitiveInfo
                 string name = sharedPreferences(options);
                 putExtra(key, value, name);
 
-                result.Resolve(value);
+                promise.Resolve(value);
             }
             catch (Exception ex)
             {
-                result.Reject(new ReactError { Message = "ERROR SET : " + ex.Message });
+                promise.Reject(new ReactError { Message = "ERROR SET : " + ex.Message });
             }
         }
 
         [ReactMethod]
-        public void deleteItem(string key, JObject options, IReactPromise<string> result)
+        public void deleteItem(string key, JObject options, IReactPromise<string> promise)
         {
             if (string.IsNullOrEmpty(key))
             {
-                result.Reject(new ReactError { Exception = new ArgumentNullException("KEY IS REQUIRED") });
+                promise.Reject(new ReactError { Exception = new ArgumentNullException("KEY IS REQUIRED") });
                 return;
             }
 
@@ -80,15 +80,15 @@ namespace RNSensitiveInfo
                 var credential = vault.Retrieve(name, key);
                 vault.Remove(credential);
 
-                result.Resolve(key);
+                promise.Resolve(key);
             }
             catch (Exception ex)
             {
-                result.Reject(new ReactError { Message = "ERROR DELETE : " + ex.Message });
+                promise.Reject(new ReactError { Message = "ERROR DELETE : " + ex.Message });
             }
         }
 
-        public void getAllItems(JObject options, IReactPromise<Dictionary<string, string>> result)
+        public void getAllItems(JObject options, IReactPromise<Dictionary<string, string>> promise)
         {
             try
             {
@@ -106,11 +106,11 @@ namespace RNSensitiveInfo
                     });
 
                 }
-                result.Resolve(ret);
+                promise.Resolve(ret);
             }
             catch (Exception ex)
             {
-                result.Reject(new ReactError { Message = "ERROR GET ALL : " + ex.Message });
+                promise.Reject(new ReactError { Message = "ERROR GET ALL : " + ex.Message });
             }
         }
 
