@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 
-const { RNSensitiveInfo } = NativeModules;
+const RNSensitiveInfo = NativeModules.RNSensitiveInfo;
 
 export default {
   ...RNSensitiveInfo,
