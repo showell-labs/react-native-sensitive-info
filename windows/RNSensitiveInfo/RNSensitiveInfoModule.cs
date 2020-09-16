@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
+using Windows.Security.Credentials;
+
 using Microsoft.ReactNative.Managed;
 using Microsoft.ReactNative;
-using Windows.Security.Credentials;
 
 namespace RNSensitiveInfo
 {
@@ -13,7 +13,7 @@ namespace RNSensitiveInfo
     {
         
         [ReactMethod]
-        public void getItem(string key, JObject options, IReactPromise<string> promise)
+        public void getItem(string key, JSValue options, IReactPromise<string> promise)
         {
             if (string.IsNullOrEmpty(key))
             {
@@ -33,7 +33,6 @@ namespace RNSensitiveInfo
                 else
                 {
                     throw new Exception("credential NOT FOUND");
-                    // How about reject exception here?
                 }
             }
             catch (Exception ex)
@@ -43,7 +42,7 @@ namespace RNSensitiveInfo
         }
 
         [ReactMethod]
-        public void setItem(string key, string value, JObject options, IReactPromise<string> promise)
+        public void setItem(string key, string value, JSValue options, IReactPromise<string> promise)
         {
             if (string.IsNullOrEmpty(key))
             {
@@ -65,7 +64,7 @@ namespace RNSensitiveInfo
         }
 
         [ReactMethod]
-        public void deleteItem(string key, JObject options, IReactPromise<string> promise)
+        public void deleteItem(string key, JSValue options, IReactPromise<string> promise)
         {
             if (string.IsNullOrEmpty(key))
             {
@@ -88,12 +87,13 @@ namespace RNSensitiveInfo
             }
         }
 
-        public void getAllItems(JObject options, IReactPromise<Dictionary<string, string>> promise)
+        [ReactMethod]
+        public void getAllItems(JSValue options, IReactPromise<JSValue> promise)
         {
             try
             {
                 string name = sharedPreferences(options);
-                Dictionary<string, string> ret = new Dictionary<string, string>();
+                JSValueObject ret = new JSValueObject();
 
                 var vault = new PasswordVault();
                 var credentialList = vault.FindAllByResource(name);
@@ -136,14 +136,18 @@ namespace RNSensitiveInfo
 
         }
 
-        private string sharedPreferences(JObject options)
+        private string sharedPreferences(JSValue options)
         {
-            string name = options.Value<string>("sharedPreferencesName") ?? "keystore";
-            if (name == null)
+            JSValue val;
+            var opt = options.AsObject();
+            if (opt.TryGetValue("sharedPreferencesName", out val))
             {
-                name = "keystore";
+                return val.AsString();
             }
-            return name;
+            else
+            {
+                return "shared_preferences";
+            }
         }
 
     }
