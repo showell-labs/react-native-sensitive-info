@@ -32,11 +32,13 @@ interface RNSensitiveInfoAndroidDialogStrings {
 export interface RNSensitiveInfoOptions {
   kSecAccessControl?: RNSensitiveInfoAccessControlOptions;
   kSecAttrAccessible?: RNSensitiveInfoAttrAccessibleOptions;
+  kSecAttrSynchronizable?: boolean;
   keychainService?: string;
   sharedPreferencesName?: string;
   touchID?: boolean;
   showModal?: boolean;
   kSecUseOperationPrompt?: string;
+  kLocalizedFallbackTitle?: string;
   strings?: RNSensitiveInfoAndroidDialogStrings;
 }
 
@@ -49,9 +51,16 @@ export declare function getItem(
   key: string,
   options: RNSensitiveInfoOptions
 ): Promise<string>;
+
+interface SensitiveInfoEntry {
+  key: string
+  value: string
+  service: string
+}
 export declare function getAllItems(
   options: RNSensitiveInfoOptions
-): Promise<Object>;
+): Promise<[SensitiveInfoEntry[]]>;
+
 export declare function deleteItem(
   key: string,
   options: RNSensitiveInfoOptions
@@ -59,7 +68,6 @@ export declare function deleteItem(
 export declare function isSensorAvailable(): Promise<
   RNSensitiveInfoBiometryType | boolean
 >;
-export declare function isHardwareDetected(): Promise<boolean>;
 export declare function hasEnrolledFingerprints(): Promise<boolean>;
 export declare function cancelFingerprintAuth(): void;
 export declare function setInvalidatedByBiometricEnrollment(set: boolean): void;
